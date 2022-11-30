@@ -95,8 +95,8 @@ p2 <- ggplot(q2s) +
   geom_segment(data=pops2, x = pops2$Start - 0.5, y=0, xend = pops2$Start-0.5, yend=1, alpha=0.9, size=0.25) +
   geom_segment(data=pops2, x = pops2$Stop[length(pops2$Stop)]  + 0.5, y=0, xend= pops2$Stop[length(pops2$Stop)] + 0.5, yend=1,  alpha=0.9,
                size=0.25) +
-  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=1, yend=1, alpha=0.9, size=0.25) +
-  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=0, yend=0, alpha=0.9, size=0.25) +
+  geom_segment(x=0+0.5, xend= pops2$Stop[length(pops2$Stop)]+0.5, y=1, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(x=0+0.5, xend= pops2$Stop[length(pops2$Stop)]+0.5, y=0, yend=0, alpha=0.9, size=0.25) +
   ylim(-0.1,1.01) +
   xlim(-0.1, pops2$Stop[length(pops2$Stop)]+1) +
   theme(panel.background = element_blank()) +
@@ -127,8 +127,8 @@ p3<-ggplot(q3s) +
   geom_segment(data=pops2, x = pops2$Start - 0.5, y=0, xend = pops2$Start-0.5, yend=1, alpha=0.9, size=0.25) +
   geom_segment(data=pops2, x = pops2$Stop[length(pops2$Stop)]  + 0.5, y=0, xend= pops2$Stop[length(pops2$Stop)] + 0.5, yend=1,  alpha=0.9,
                size=0.25) +
-  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=1, yend=1, alpha=0.9, size=0.25) +
-  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=0, yend=0, alpha=0.9, size=0.25) +
+  geom_segment(x=0+0.5, xend= pops2$Stop[length(pops2$Stop)]+0.5, y=1, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(x=0+0.5, xend= pops2$Stop[length(pops2$Stop)]+0.5, y=0, yend=0, alpha=0.9, size=0.25) +
  # theme(axis.text.x = element_text(angle=45, hjust=1)) +
   theme(axis.text.x=element_blank()) +
   theme(axis.ticks.x= element_blank()) +
@@ -160,8 +160,8 @@ p4<-ggplot(q4s) +
   geom_segment(data=pops2, x = pops2$Start - 0.5, y=0, xend = pops2$Start-0.5, yend=1, alpha=0.9, size=0.25) +
   geom_segment(data=pops2, x = pops2$Stop[length(pops2$Stop)]  + 0.5, y=0, xend= pops2$Stop[length(pops2$Stop)] + 0.5, yend=1,  alpha=0.9,
                size=0.25) +
-  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=1, yend=1, alpha=0.9, size=0.25) +
-  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=0, yend=0, alpha=0.9, size=0.25) +
+  geom_segment(x=0+0.5, xend= pops2$Stop[length(pops2$Stop)]+0.5, y=1, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(x=0+0.5, xend= pops2$Stop[length(pops2$Stop)]+0.5, y=0, yend=0, alpha=0.9, size=0.25) +
   theme(axis.text.x = element_text(angle=45, hjust=1)) +
   #theme(axis.text.x=element_blank()) +
   #theme(axis.ticks.x= element_blank()) +
