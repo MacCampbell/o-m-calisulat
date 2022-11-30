@@ -1,0 +1,168 @@
+IQ-TREE 2.0-rc1 built Nov 21 2019
+
+Input file name: example.phy
+Type of analysis: tree reconstruction
+Random seed number: 247417
+
+REFERENCES
+----------
+
+To cite IQ-TREE please use:
+
+Lam-Tung Nguyen, Heiko A. Schmidt, Arndt von Haeseler, and Bui Quang Minh
+(2015) IQ-TREE: A fast and effective stochastic algorithm for estimating
+maximum likelihood phylogenies. Mol Biol Evol, 32:268-274.
+https://doi.org/10.1093/molbev/msu300
+
+SEQUENCE ALIGNMENT
+------------------
+
+Input data: 41 sequences with 2999 nucleotide sites
+Number of constant sites: 0 (= 0% of all sites)
+Number of invariant (constant or ambiguous constant) sites: 0 (= 0% of all sites)
+Number of parsimony informative sites: 1775
+Number of distinct site patterns: 2990
+
+SUBSTITUTION PROCESS
+--------------------
+
+Model of substitution: TVM+F+ASC+R2
+
+Rate parameter R:
+
+  A-C: 0.9896
+  A-G: 2.5930
+  A-T: 1.5424
+  C-G: 0.2384
+  C-T: 2.5930
+  G-T: 1.0000
+
+State frequencies: (empirical counts from alignment)
+
+  pi(A) = 0.1853
+  pi(C) = 0.3154
+  pi(G) = 0.3157
+  pi(T) = 0.1836
+
+Rate matrix Q:
+
+  A    -1.431     0.316    0.8287    0.2867
+  C    0.1857   -0.7439   0.07619     0.482
+  G    0.4865   0.07612   -0.7485    0.1859
+  T    0.2894    0.8279    0.3196    -1.437
+
+Model of rate heterogeneity: FreeRate with 2 categories
+Site proportion and rates:  (0.9159,0.7037) (0.08407,4.228)
+
+ Category  Relative_rate  Proportion
+  1         0.7037         0.9159
+  2         4.228          0.08407
+
+MAXIMUM LIKELIHOOD TREE
+-----------------------
+
+Log-likelihood of the tree: -26507.9350 (s.e. 265.9769)
+Unconstrained log-likelihood (without tree): -23997.0966
+Number of free parameters (#branches + #model parameters): 88
+Akaike information criterion (AIC) score: 53191.8699
+Corrected Akaike information criterion (AICc) score: 53197.2527
+Bayesian information criterion (BIC) score: 53720.4009
+
+Total tree length (sum of branch lengths): 0.8892
+Sum of internal branch lengths: 0.5521 (62.0827% of tree length)
+
+NOTE: Tree is UNROOTED although outgroup taxon 'LCT_GACR_10' is drawn at root
+
++--LCT_GACR_10
+|
++--PCT_PPP1_01
+|
+|                                                          +--CAGT_VCLS_01
+|                                                       +--|
+|                                                       |  |  +--CAGT_STLC_01
+|                                                       |  +--|
+|                                                       |     +--CAGT_STLC_02
+|                                     +-----------------|
+|                                     |                 +--CAGT_VCLS_02
+|                                  +--|
+|                                  |  |                     +--LKGT_UWLC_01
+|                                  |  |            +--------|
+|                                  |  |            |        +--LKGT_UWLC_02
+|                                  |  |  +---------|
+|                                  |  |  |         |  +--LKGT_SILV_01
+|                                  |  |  |         +--|
+|                                  |  |  |            +--LKGT_SILV_02
+|                                  |  +--|
+|                                  |     |   +--KRNB_CHGC_01
+|                                  |     +---|
+|                                  |         +--KRNB_KKWC_01
+|                               +--|
+|                               |  |           +--REDB_CTWD_01
+|                               |  |        +--|
+|                               |  |        |  |  +--REDB_CTWD_02
+|                               |  |        |  +--|
+|                               |  |        |     |  +--REDB_DISM_01
+|                               |  |        |     +--|
+|                               |  |        |        |  +--REDB_DISM_03
+|                               |  |        |        +--|
+|                               |  |        |           |      +---REDB_SHLD_01
+|                               |  |        |           |  +---|
+|                               |  |        |           |  |   +---REDB_SHLD_02
+|                               |  |        |           +--|
+|                               |  |        |              |    +--REDB_FTZH_02
+|                               |  |        |              +----|
+|                               |  |        |                   +--REDB_FTZH_05
+|                               |  |     +--|
+|                               |  |     |  |        +-----CRRB_JCKS_01
+|                               |  |     |  |     +--|
+|                               |  |     |  |     |  +-------CRRB_JCKS_02
+|                               |  |     |  +-----|
+|                               |  |     |        |        +--CRRB_FAWN_01
+|                               |  |     |        +--------|
+|                               |  |     |                 +--CRRB_FAWN_02
+|                               |  |  +--|
+|                               |  |  |  |    +--REDB_DRYC_01
+|                               |  |  |  +----|
+|                               |  |  |       |  +--REDB_DRYC_03
+|                               |  |  |       +--|
+|                               |  |  |          |        +--REDB_SHPN_01
+|                               |  |  |          |     +--|
+|                               |  |  |          |     |  +--REDB_SHPN_02
+|                               |  |  |          |  +--|
+|                               |  |  |          |  |  |   +--REDB_MOHD_01
+|                               |  |  |          |  |  +---|
+|                               |  |  |          |  |      +--REDB_MOHD_02
+|                               |  |  |          +--|
+|                               |  |  |             |   +--REDB_EDSN_01
+|                               |  |  |             +---|
+|                               |  |  |                 +--REDB_EDSN_04
+|                               |  +--|
+|                               |     |        +--STLH_LYBA_01
+|                               |     |     +--|
+|                               |     |     |  |    +---HRNB_COLE_01
+|                               |     |     |  +----|
+|                               |     |     |       +---HRNB_COLE_02
+|                               |     |  +--|
+|                               |     |  |  +--STLH_LYBA_02
+|                               |     +--|
+|                               |        |   +--RAIN_NFAR_02
+|                               |        +---|
+|                               |            +---RAIN_NFAR_05
++-------------------------------|
+                                |     +--RAIN_EGLK_01
+                                +-----|
+                                      |  +--RAIN_EGLK_02
+                                      +--|
+                                         +---RAIN_EGLK_04
+
+Tree in newick format:
+
+(LCT_GACR_10:0.0004241784,PCT_PPP1_01:0.0016231451,(((((CAGT_VCLS_01:0.0049556683,(CAGT_STLC_01:0.0068027630,CAGT_STLC_02:0.0108623969):0.0076129543):0.0051855721,CAGT_VCLS_02:0.0041434566):0.0630326097,(((LKGT_UWLC_01:0.0033303181,LKGT_UWLC_02:0.0036200163):0.0309474526,(LKGT_SILV_01:0.0055627290,LKGT_SILV_02:0.0030767484):0.0071092926):0.0353908738,(KRNB_CHGC_01:0.0056615866,KRNB_KKWC_01:0.0045870345):0.0150689990):0.0084342020):0.0043768157,((((REDB_CTWD_01:0.0030336384,(REDB_CTWD_02:0.0059034303,(REDB_DISM_01:0.0075074502,(REDB_DISM_03:0.0073491555,((REDB_SHLD_01:0.0157947373,REDB_SHLD_02:0.0155797483):0.0153270061,(REDB_FTZH_02:0.0124757958,REDB_FTZH_05:0.0094601373):0.0201806581):0.0076556527):0.0039397565):0.0069019294):0.0025715426):0.0047825731,((CRRB_JCKS_01:0.0218388676,CRRB_JCKS_02:0.0283686399):0.0055437560,(CRRB_FAWN_01:0.0128906253,CRRB_FAWN_02:0.0101675617):0.0308368659):0.0230551526):0.0023810941,(REDB_DRYC_01:0.0034600468,(REDB_DRYC_03:0.0063816605,(((REDB_SHPN_01:0.0008087185,REDB_SHPN_02:0.0043938329):0.0063733156,(REDB_MOHD_01:0.0027554289,REDB_MOHD_02:0.0018560014):0.0153952022):0.0047236942,(REDB_EDSN_01:0.0017570100,REDB_EDSN_04:0.0017303943):0.0151260740):0.0036337260):0.0030775899):0.0188916534):0.0019523594,(((STLH_LYBA_01:0.0063553099,(HRNB_COLE_01:0.0152868681,HRNB_COLE_02:0.0157217896):0.0192731844):0.0022728062,STLH_LYBA_02:0.0065038611):0.0011279424,(RAIN_NFAR_02:0.0103281174,RAIN_NFAR_05:0.0137425777):0.0139758099):0.0016942898):0.0014992695):0.0034104998,(RAIN_EGLK_01:0.0128677519,(RAIN_EGLK_02:0.0116201558,RAIN_EGLK_04:0.0165792319):0.0080466592):0.0228384627):0.1084051819);
+
+TIME STAMP
+----------
+
+Date and time: Mon Mar 16 12:40:13 2020
+Total CPU time used: 55.2035 seconds (0h:0m:55s)
+Total wall-clock time used: 58.2237 seconds (0h:0m:58s)
+

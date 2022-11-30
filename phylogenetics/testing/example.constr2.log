@@ -1,0 +1,149 @@
+IQ-TREE multicore version 2.0-rc1 for Mac OS X 64-bit built Nov 21 2019
+Developed by Bui Quang Minh, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
+
+Host:    Macs-MacBook-Pro-2.local (AVX, 16 GB RAM)
+Command: iqtree -s example.phy -m TVM+F+ASC+R2 -st DNA -g constrain2.tre --prefix example.constr2 --redo
+Seed:    72739 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Mon Mar 16 12:54:14 2020
+Kernel:  AVX - 1 threads (4 CPU cores detected)
+
+HINT: Use -nt option to specify number of threads because your CPU has 4 cores!
+HINT: -nt AUTO will automatically determine the best number of threads to use.
+
+Reading alignment file example.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: Your specified sequence type is different from the detected one
+Alignment has 41 sequences with 2999 columns, 2990 distinct patterns
+1775 parsimony-informative, 1224 singleton sites, 0 constant sites
+              Gap/Ambiguity  Composition  p-value
+   1  LCT_GACR_10     6.30%    failed      0.11%
+   2  PCT_PPP1_01     3.97%    failed      1.84%
+   3  CAGT_VCLS_01   10.87%    passed     32.43%
+   4  CAGT_VCLS_02   14.10%    passed     83.24%
+   5  CAGT_STLC_01    7.77%    passed      8.03%
+   6  CAGT_STLC_02    7.64%    failed      3.23%
+   7  LKGT_UWLC_01    9.30%    failed      1.43%
+   8  LKGT_UWLC_02    9.67%    passed      6.02%
+   9  LKGT_SILV_01   16.01%    passed     63.31%
+  10  LKGT_SILV_02   27.51%    passed     56.81%
+  11  KRNB_CHGC_01   17.24%    passed     87.20%
+  12  KRNB_KKWC_01   18.71%    passed     48.99%
+  13  REDB_CTWD_01   30.38%    passed      5.85%
+  14  REDB_CTWD_02   21.94%    passed     10.72%
+  15  REDB_DISM_01   21.04%    passed     57.05%
+  16  REDB_DISM_03   17.21%    passed     73.50%
+  17  REDB_SHLD_01   14.84%    passed     89.86%
+  18  REDB_SHLD_02   14.87%    passed     75.67%
+  19  REDB_FTZH_02   12.24%    passed     93.45%
+  20  REDB_FTZH_05   14.84%    passed     79.86%
+  21  RAIN_EGLK_01   16.87%    passed     78.22%
+  22  RAIN_EGLK_02   16.81%    passed     51.99%
+  23  RAIN_EGLK_04   14.64%    passed     72.34%
+  24  STLH_LYBA_01   20.31%    passed     21.48%
+  25  STLH_LYBA_02   18.97%    passed     20.61%
+  26  RAIN_NFAR_02   16.34%    passed     54.51%
+  27  RAIN_NFAR_05   15.41%    passed     55.65%
+  28  HRNB_COLE_01   15.51%    passed     98.24%
+  29  HRNB_COLE_02   15.44%    passed     94.63%
+  30  REDB_DRYC_01   14.84%    passed     11.68%
+  31  REDB_DRYC_03   10.00%    passed     47.13%
+  32  REDB_SHPN_01   10.17%    passed     39.26%
+  33  REDB_SHPN_02    6.34%    passed     87.97%
+  34  REDB_EDSN_01    7.94%    passed     39.32%
+  35  REDB_EDSN_04    6.30%    passed     68.65%
+  36  REDB_MOHD_01    7.34%    passed     74.17%
+  37  REDB_MOHD_02    7.00%    passed     64.30%
+  38  CRRB_JCKS_01   15.84%    passed     85.28%
+  39  CRRB_JCKS_02   12.80%    passed     78.04%
+  40  CRRB_FAWN_01   10.74%    passed     95.62%
+  41  CRRB_FAWN_02   11.54%    passed     60.47%
+****  TOTAL          13.84%  4 sequences failed composition chi2 test (p-value<5%; df=3)
+Reading constraint tree constrain2.tre...
+WARNING: Rooted constraint tree will be treated as unrooted tree
+Creating fast initial parsimony tree by random order stepwise addition...
+0.008 seconds, parsimony score: 4680 (based on 2999 sites)
+
+NOTE: 7 MB RAM (0 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+1. Initial log-likelihood: -28534.723
+2. Current log-likelihood: -27151.848
+3. Current log-likelihood: -26577.721
+4. Current log-likelihood: -26560.184
+5. Current log-likelihood: -26548.190
+6. Current log-likelihood: -26539.725
+7. Current log-likelihood: -26535.306
+8. Current log-likelihood: -26532.448
+9. Current log-likelihood: -26530.768
+10. Current log-likelihood: -26529.609
+11. Current log-likelihood: -26528.949
+12. Current log-likelihood: -26528.628
+13. Current log-likelihood: -26528.406
+Optimal log-likelihood: -26528.247
+Rate parameters:  A-C: 0.98629  A-G: 2.58723  A-T: 1.55006  C-G: 0.24104  C-T: 2.58723  G-T: 1.00000
+Base frequencies:  A: 0.185  C: 0.315  G: 0.316  T: 0.184
+Site proportion and rates:  (0.904,0.681) (0.096,4.013)
+Parameters optimization took 13 rounds (2.727 sec)
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Generating 99 parsimony trees... 0.526 second
+Computing log-likelihood of 99 initial trees ... 2.842 seconds
+Current best score: -26528.247
+
+Do NNI search on 20 best initial trees
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1: -26526.213
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 3: -26521.307
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 7: -26516.473
+Iteration 10 / LogL: -26524.636 / Time: 0h:0m:9s
+Iteration 20 / LogL: -26529.218 / Time: 0h:0m:12s
+Finish initializing candidate tree set (4)
+Current best tree score: -26516.473 / CPU time: 10.236
+Number of iterations: 20
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Iteration 30 / LogL: -26516.516 / Time: 0h:0m:16s (0h:0m:44s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 34: -26516.317
+Iteration 40 / LogL: -26516.325 / Time: 0h:0m:20s (0h:0m:49s left)
+Iteration 50 / LogL: -26516.816 / Time: 0h:0m:24s (0h:0m:42s left)
+Iteration 60 / LogL: -26521.405 / Time: 0h:0m:28s (0h:0m:36s left)
+Iteration 70 / LogL: -26517.292 / Time: 0h:0m:33s (0h:0m:30s left)
+Iteration 80 / LogL: -26521.722 / Time: 0h:0m:36s (0h:0m:25s left)
+Iteration 90 / LogL: -26516.821 / Time: 0h:0m:41s (0h:0m:20s left)
+Iteration 100 / LogL: -26521.384 / Time: 0h:0m:45s (0h:0m:15s left)
+Iteration 110 / LogL: -26521.360 / Time: 0h:0m:49s (0h:0m:10s left)
+Iteration 120 / LogL: -26516.905 / Time: 0h:0m:52s (0h:0m:6s left)
+Iteration 130 / LogL: -26522.612 / Time: 0h:0m:56s (0h:0m:1s left)
+TREE SEARCH COMPLETED AFTER 135 ITERATIONS / Time: 0h:0m:58s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+1. Initial log-likelihood: -26516.317
+Optimal log-likelihood: -26516.313
+Rate parameters:  A-C: 0.98723  A-G: 2.59476  A-T: 1.53736  C-G: 0.24006  C-T: 2.59476  G-T: 1.00000
+Base frequencies:  A: 0.185  C: 0.315  G: 0.316  T: 0.184
+Site proportion and rates:  (0.914,0.701) (0.086,4.191)
+Parameters optimization took 1 rounds (0.128 sec)
+BEST SCORE FOUND : -26516.313
+Total tree length: 0.892
+
+Total number of iterations: 135
+CPU time used for tree search: 52.814 sec (0h:0m:52s)
+Wall-clock time used for tree search: 55.848 sec (0h:0m:55s)
+Total CPU time used: 55.469 sec (0h:0m:55s)
+Total wall-clock time used: 58.730 sec (0h:0m:58s)
+
+Analysis results written to: 
+  IQ-TREE report:                example.constr2.iqtree
+  Maximum-likelihood tree:       example.constr2.treefile
+  Screen log file:               example.constr2.log
+
+Date and Time: Mon Mar 16 12:55:12 2020

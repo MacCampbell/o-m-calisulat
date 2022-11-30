@@ -1,0 +1,322 @@
+IQ-TREE 2.0-rc1 built Nov 21 2019
+
+Input file name: outputs/900/test14-maf05p-sites.sort.prune.reheadered.min4.asc.phy
+Type of analysis: ModelFinder + tree reconstruction + ultrafast bootstrap (1000 replicates)
+Random seed number: 643012
+
+REFERENCES
+----------
+
+To cite ModelFinder please use: 
+
+Subha Kalyaanamoorthy, Bui Quang Minh, Thomas KF Wong, Arndt von Haeseler,
+and Lars S Jermiin (2017) ModelFinder: Fast model selection for
+accurate phylogenetic estimates. Nature Methods, 14:587–589.
+https://doi.org/10.1038/nmeth.4285
+
+To cite IQ-TREE please use:
+
+Lam-Tung Nguyen, Heiko A. Schmidt, Arndt von Haeseler, and Bui Quang Minh
+(2015) IQ-TREE: A fast and effective stochastic algorithm for estimating
+maximum likelihood phylogenies. Mol Biol Evol, 32:268-274.
+https://doi.org/10.1093/molbev/msu300
+
+Since you used ultrafast bootstrap (UFBoot) please also cite: 
+
+Diep Thi Hoang, Olga Chernomor, Arndt von Haeseler, Bui Quang Minh,
+and Le Sy Vinh (2017) UFBoot2: Improving the ultrafast bootstrap
+approximation. Mol Biol Evol, in press.
+https://doi.org/10.1093/molbev/msx281
+
+SEQUENCE ALIGNMENT
+------------------
+
+Input data: 41 sequences with 2999 nucleotide sites
+Number of constant sites: 0 (= 0% of all sites)
+Number of invariant (constant or ambiguous constant) sites: 0 (= 0% of all sites)
+Number of parsimony informative sites: 1775
+Number of distinct site patterns: 2990
+
+ModelFinder
+-----------
+
+Best-fit model according to BIC: TVM+F+ASC+R2
+
+List of models sorted by BIC scores: 
+
+Model                  LogL         AIC      w-AIC        AICc     w-AICc         BIC      w-BIC
+TVM+F+ASC+R2     -26522.531   53221.062 +    0.586   53226.445 +    0.609   53749.593 +    0.976
+GTR+F+ASC+R2     -26522.230   53222.461 +    0.291   53227.968 +    0.285   53756.998 -   0.0241
+GTR+F+ASC+R3     -26521.091   53224.181 +    0.123   53229.941 +    0.106   53770.730 - 2.51e-05
+GTR+F+ASC+G4     -26594.386   53364.773 - 3.64e-32   53370.155 - 3.79e-32   53893.304 - 6.07e-32
+TVMe+ASC+R2      -26618.993   53407.986 - 1.51e-41   53413.005 - 1.88e-41   53918.499 - 2.05e-37
+SYM+ASC+R2       -26618.533   53409.065 - 8.78e-42   53414.204 - 1.03e-41   53925.584 - 5.94e-39
+K3P+ASC+R2       -26663.333   53492.667 - 6.16e-60   53497.450 - 8.65e-60   53991.168 - 3.41e-53
+TIMe+ASC+R2      -26662.814   53493.628 - 3.81e-60   53498.529 - 5.04e-60   53998.135 - 1.05e-54
+TIM2e+ASC+R2     -26685.284   53538.568 - 6.64e-70   53543.468 - 8.79e-70   54043.075 - 1.82e-64
+TIM3e+ASC+R2     -26685.564   53539.127 - 5.02e-70   53544.028 - 6.65e-70   54043.634 - 1.38e-64
+K2P+ASC+R2       -26708.439   53580.878 - 4.31e-79   53585.546 - 6.42e-79   54073.372 - 4.81e-71
+TNe+ASC+R2       -26707.908   53581.817 -  2.7e-79   53586.600 - 3.79e-79   54080.318 - 1.49e-72
+TPM3+F+ASC+R2    -26714.563   53601.127 - 1.73e-83   53606.266 - 2.03e-83   54117.646 - 1.17e-80
+TPM3u+F+ASC+R2   -26714.563   53601.127 - 1.73e-83   53606.266 - 2.03e-83   54117.646 - 1.17e-80
+TPM2+F+ASC+R2    -26716.903   53605.805 - 1.67e-84   53610.944 - 1.96e-84   54122.324 - 1.13e-81
+TPM2u+F+ASC+R2   -26716.903   53605.805 - 1.67e-84   53610.944 - 1.96e-84   54122.324 - 1.13e-81
+TIM3+F+ASC+R2    -26714.139   53602.278 - 9.72e-84   53607.538 - 1.08e-83   54124.803 - 3.26e-82
+TIM2+F+ASC+R2    -26716.504   53607.008 - 9.13e-85   53612.268 - 1.01e-84   54129.533 - 3.07e-83
+GTR+F+ASC        -26720.825   53615.650 - 1.21e-86   53620.910 - 1.34e-86   54138.175 - 4.07e-85
+K3Pu+F+ASC+R2    -26772.251   53716.503 - 1.53e-108   53721.641 - 1.8e-108   54233.021 - 1.03e-105
+TIM+F+ASC+R2     -26771.858   53717.715 - 8.34e-109   53722.975 - 9.22e-109   54240.240 - 2.8e-107
+HKY+F+ASC+R2     -26862.938   53895.876 - 1.71e-147   53900.895 - 2.14e-147   54406.389 - 2.33e-143
+TN+F+ASC+R2      -26862.527   53897.053 - 9.51e-148   53902.192 - 1.12e-147   54413.572 - 6.43e-145
+JC+ASC+R2        -27441.438   55044.877 -        0   55049.431 -        0   55531.366 -        0
+F81+F+ASC+R2     -27716.392   55600.785 -        0   55605.685 -        0   56105.292 -        0
+
+AIC, w-AIC   : Akaike information criterion scores and weights.
+AICc, w-AICc : Corrected AIC scores and weights.
+BIC, w-BIC   : Bayesian information criterion scores and weights.
+
+Plus signs denote the 95% confidence sets.
+Minus signs denote significant exclusion.
+
+SUBSTITUTION PROCESS
+--------------------
+
+Model of substitution: TVM+F+ASC+R2
+
+Rate parameter R:
+
+  A-C: 0.9936
+  A-G: 2.5954
+  A-T: 1.5453
+  C-G: 0.2391
+  C-T: 2.5954
+  G-T: 1.0000
+
+State frequencies: (empirical counts from alignment)
+
+  pi(A) = 0.1853
+  pi(C) = 0.3154
+  pi(G) = 0.3157
+  pi(T) = 0.1836
+
+Rate matrix Q:
+
+  A    -1.432    0.3168    0.8283    0.2868
+  C    0.1862   -0.7442   0.07629    0.4818
+  G    0.4863   0.07622   -0.7482    0.1856
+  T    0.2896    0.8275    0.3191    -1.436
+
+Model of rate heterogeneity: FreeRate with 2 categories
+Site proportion and rates:  (0.916,0.7038) (0.08404,4.229)
+
+ Category  Relative_rate  Proportion
+  1         0.7038         0.916
+  2         4.229          0.08404
+
+MAXIMUM LIKELIHOOD TREE
+-----------------------
+
+Log-likelihood of the tree: -26507.9339 (s.e. 265.9739)
+Unconstrained log-likelihood (without tree): -23997.0966
+Number of free parameters (#branches + #model parameters): 88
+Akaike information criterion (AIC) score: 53191.8678
+Corrected Akaike information criterion (AICc) score: 53197.2507
+Bayesian information criterion (BIC) score: 53720.3989
+
+Total tree length (sum of branch lengths): 0.8892
+Sum of internal branch lengths: 0.5520 (62.0831% of tree length)
+
+NOTE: Tree is UNROOTED although outgroup taxon 'LCT_GACR_10' is drawn at root
+Numbers in parentheses are SH-aLRT support (%) / ultrafast bootstrap support (%)
+
++--LCT_GACR_10
+|
++--PCT_PPP1_01
+|
+|                                                          +--CAGT_VCLS_01
+|                                                       +--| (79.5/94)
+|                                                       |  |  +--CAGT_STLC_01
+|                                                       |  +--| (92.4/97)
+|                                                       |     +--CAGT_STLC_02
+|                                     +-----------------| (100/100)
+|                                     |                 +--CAGT_VCLS_02
+|                                  +--| (97.4/95)
+|                                  |  |                     +--LKGT_UWLC_01
+|                                  |  |            +--------| (100/100)
+|                                  |  |            |        +--LKGT_UWLC_02
+|                                  |  |  +---------| (100/100)
+|                                  |  |  |         |  +--LKGT_SILV_01
+|                                  |  |  |         +--| (88.5/97)
+|                                  |  |  |            +--LKGT_SILV_02
+|                                  |  +--| (86.8/91)
+|                                  |     |   +--KRNB_CHGC_01
+|                                  |     +---| (100/100)
+|                                  |         +--KRNB_KKWC_01
+|                               +--| (90.1/32)
+|                               |  |           +--REDB_CTWD_01
+|                               |  |        +--| (95.7/99)
+|                               |  |        |  |  +--REDB_CTWD_02
+|                               |  |        |  +--| (77.3/97)
+|                               |  |        |     |  +--REDB_DISM_01
+|                               |  |        |     +--| (95.1/99)
+|                               |  |        |        |  +--REDB_DISM_03
+|                               |  |        |        +--| (58.2/92)
+|                               |  |        |           |      +---REDB_SHLD_01
+|                               |  |        |           |  +---| (99.9/100)
+|                               |  |        |           |  |   +---REDB_SHLD_02
+|                               |  |        |           +--| (77.6/93)
+|                               |  |        |              |    +--REDB_FTZH_02
+|                               |  |        |              +----| (100/100)
+|                               |  |        |                   +--REDB_FTZH_05
+|                               |  |     +--| (92.8/90)
+|                               |  |     |  |        +-----CRRB_JCKS_01
+|                               |  |     |  |     +--| (52.4/83)
+|                               |  |     |  |     |  +-------CRRB_JCKS_02
+|                               |  |     |  +-----| (100/100)
+|                               |  |     |        |        +--CRRB_FAWN_01
+|                               |  |     |        +--------| (100/100)
+|                               |  |     |                 +--CRRB_FAWN_02
+|                               |  |  +--| (94/37)
+|                               |  |  |  |    +--REDB_DRYC_01
+|                               |  |  |  +----| (100/100)
+|                               |  |  |       |  +--REDB_DRYC_03
+|                               |  |  |       +--| (78.8/92)
+|                               |  |  |          |        +--REDB_SHPN_01
+|                               |  |  |          |     +--| (98.6/100)
+|                               |  |  |          |     |  +--REDB_SHPN_02
+|                               |  |  |          |  +--| (56.1/83)
+|                               |  |  |          |  |  |   +--REDB_MOHD_01
+|                               |  |  |          |  |  +---| (100/100)
+|                               |  |  |          |  |      +--REDB_MOHD_02
+|                               |  |  |          +--| (92.7/95)
+|                               |  |  |             |   +--REDB_EDSN_01
+|                               |  |  |             +---| (100/100)
+|                               |  |  |                 +--REDB_EDSN_04
+|                               |  +--| (83.3/17)
+|                               |     |        +--STLH_LYBA_01
+|                               |     |     +--| (87.1/64)
+|                               |     |     |  |    +---HRNB_COLE_01
+|                               |     |     |  +----| (100/100)
+|                               |     |     |       +---HRNB_COLE_02
+|                               |     |  +--| (36.2/60)
+|                               |     |  |  +--STLH_LYBA_02
+|                               |     +--| (67.3/28)
+|                               |        |   +--RAIN_NFAR_02
+|                               |        +---| (100/100)
+|                               |            +---RAIN_NFAR_05
++-------------------------------| (100/100)
+                                |     +--RAIN_EGLK_01
+                                +-----| (100/100)
+                                      |  +--RAIN_EGLK_02
+                                      +--| (67.8/85)
+                                         +---RAIN_EGLK_04
+
+Tree in newick format:
+
+(LCT_GACR_10:0.0004241549,PCT_PPP1_01:0.0016230674,(((((CAGT_VCLS_01:0.0049550984,(CAGT_STLC_01:0.0068032657,CAGT_STLC_02:0.0108616914)92.4/97:0.0076127964)79.5/94:0.0051859479,CAGT_VCLS_02:0.0041428373)100/100:0.0630262135,(((LKGT_UWLC_01:0.0033312860,LKGT_UWLC_02:0.0036186707)100/100:0.0309455524,(LKGT_SILV_01:0.0055623974,LKGT_SILV_02:0.0030763802)88.5/97:0.0071090931)100/100:0.0353886752,(KRNB_CHGC_01:0.0056610518,KRNB_KKWC_01:0.0045864725)100/100:0.0150682053)86.8/91:0.0084334817)97.4/95:0.0043765203,((((REDB_CTWD_01:0.0030335266,(REDB_CTWD_02:0.0059029270,(REDB_DISM_01:0.0075068296,(REDB_DISM_03:0.0073483722,((REDB_SHLD_01:0.0157926014,REDB_SHLD_02:0.0155777939)99.9/100:0.0153272378,(REDB_FTZH_02:0.0124755148,REDB_FTZH_05:0.0094593959)100/100:0.0201796076)77.6/93:0.0076548967)58.2/92:0.0039394260)95.1/99:0.0069024923)77.3/97:0.0025712511)95.7/99:0.0047822578,((CRRB_JCKS_01:0.0218369964,CRRB_JCKS_02:0.0283663541)52.4/83:0.0055444399,(CRRB_FAWN_01:0.0128891735,CRRB_FAWN_02:0.0101663561)100/100:0.0308348879)100/100:0.0230532060)92.8/90:0.0023809519,(REDB_DRYC_01:0.0034597156,(REDB_DRYC_03:0.0063810603,(((REDB_SHPN_01:0.0008086202,REDB_SHPN_02:0.0043934338)98.6/100:0.0063739777,(REDB_MOHD_01:0.0027552661,REDB_MOHD_02:0.0018563951)100/100:0.0153940456)56.1/83:0.0047231757,(REDB_EDSN_01:0.0017569156,REDB_EDSN_04:0.0017301655)100/100:0.0151260338)92.7/95:0.0036332883)78.8/92:0.0030773194)100/100:0.0188902460)94/37:0.0019521190,(((STLH_LYBA_01:0.0063548082,(HRNB_COLE_01:0.0152853082,HRNB_COLE_02:0.0157202574)100/100:0.0192719110)87.1/64:0.0022733956,STLH_LYBA_02:0.0065035214)36.2/60:0.0011277690,(RAIN_NFAR_02:0.0103272424,RAIN_NFAR_05:0.0137415281)100/100:0.0139750371)67.3/28:0.0016940960)83.3/17:0.0015003601)90.1/32:0.0034104630,(RAIN_EGLK_01:0.0128668614,(RAIN_EGLK_02:0.0116191553,RAIN_EGLK_04:0.0165781935)67.8/85:0.0080461300)100/100:0.0228366192)100/100:0.1083929120);
+
+CONSENSUS TREE
+--------------
+
+Consensus tree is constructed from 1000 bootstrap trees
+Log-likelihood of consensus tree: -26512.745274
+Robinson-Foulds distance between ML tree and consensus tree: 6
+
+Branches with support >0.000000% are kept (extended consensus)
+Branch lengths are optimized by maximum likelihood on original alignment
+Numbers in parentheses are bootstrap supports (%)
+
++--LCT_GACR_10
+|
++--PCT_PPP1_01
+|
+|                                                            +--CAGT_VCLS_01
+|                                                         +--| (94)
+|                                                         |  |  +--CAGT_STLC_01
+|                                                         |  +--| (97)
+|                                                         |     +--CAGT_STLC_02
+|                                       +-----------------| (100)
+|                                       |                 +--CAGT_VCLS_02
+|                                    +--| (95)
+|                                    |  |                    +--LKGT_UWLC_01
+|                                    |  |            +-------| (100)
+|                                    |  |            |       +--LKGT_UWLC_02
+|                                    |  |  +---------| (100)
+|                                    |  |  |         |  +--LKGT_SILV_01
+|                                    |  |  |         +--| (97)
+|                                    |  |  |            +--LKGT_SILV_02
+|                                    |  +--| (91)
+|                                    |     |   +--KRNB_CHGC_01
+|                                    |     +---| (100)
+|                                    |         +--KRNB_KKWC_01
+|                                 +--| (47)
+|                                 |  |         +--RAIN_EGLK_01
+|                                 |  |  +------| (100)
+|                                 |  |  |      |  +--RAIN_EGLK_02
+|                                 |  |  |      +--| (85)
+|                                 |  |  |         +---RAIN_EGLK_04
+|                                 |  +--| (20)
+|                                 |     |        +--STLH_LYBA_01
+|                                 |     |     +--| (64)
+|                                 |     |     |  |    +---HRNB_COLE_01
+|                                 |     |     |  +----| (100)
+|                                 |     |     |       +---HRNB_COLE_02
+|                                 |     |  +--| (60)
+|                                 |     |  |  +--STLH_LYBA_02
+|                                 |     +--| (28)
+|                                 |        |   +--RAIN_NFAR_02
+|                                 |        +---| (100)
+|                                 |            +---RAIN_NFAR_05
+|                              +--| (49)
+|                              |  |     +--REDB_CTWD_01
+|                              |  |  +--| (99)
+|                              |  |  |  |  +--REDB_CTWD_02
+|                              |  |  |  +--| (97)
+|                              |  |  |     |  +--REDB_DISM_01
+|                              |  |  |     +--| (99)
+|                              |  |  |        |  +--REDB_DISM_03
+|                              |  |  |        +--| (92)
+|                              |  |  |           |      +---REDB_SHLD_01
+|                              |  |  |           |  +---| (100)
+|                              |  |  |           |  |   +---REDB_SHLD_02
+|                              |  |  |           +--| (93)
+|                              |  |  |              |    +--REDB_FTZH_02
+|                              |  |  |              +----| (100)
+|                              |  |  |                   +--REDB_FTZH_05
+|                              |  +--| (90)
+|                              |     |        +-----CRRB_JCKS_01
+|                              |     |     +--| (83)
+|                              |     |     |  +-------CRRB_JCKS_02
+|                              |     +-----| (100)
+|                              |           |       +--CRRB_FAWN_01
+|                              |           +-------| (100)
+|                              |                   +--CRRB_FAWN_02
++------------------------------| (100)
+                               |   +--REDB_DRYC_01
+                               +---| (100)
+                                   |  +--REDB_DRYC_03
+                                   +--| (92)
+                                      |        +--REDB_SHPN_01
+                                      |     +--| (100)
+                                      |     |  +--REDB_SHPN_02
+                                      |  +--| (83)
+                                      |  |  |   +--REDB_MOHD_01
+                                      |  |  +---| (100)
+                                      |  |      +--REDB_MOHD_02
+                                      +--| (95)
+                                         |   +--REDB_EDSN_01
+                                         +---| (100)
+                                             +--REDB_EDSN_04
+
+
+Consensus tree in newick format: 
+
+(LCT_GACR_10:0.0004254602,PCT_PPP1_01:0.0016314440,((((((CAGT_VCLS_01:0.0049731200,(CAGT_STLC_01:0.0068391737,CAGT_STLC_02:0.0109082030)97:0.0076281881)94:0.0052032460,CAGT_VCLS_02:0.0041719156)100:0.0635817677,(((LKGT_UWLC_01:0.0033262167,LKGT_UWLC_02:0.0036562591)100:0.0311154745,(LKGT_SILV_01:0.0055922222,LKGT_SILV_02:0.0030824882)97:0.0070947046)100:0.0356639902,(KRNB_CHGC_01:0.0059717280,KRNB_KKWC_01:0.0043984215)100:0.0150464388)91:0.0084900471)95:0.0052432995,((RAIN_EGLK_01:0.0129301769,(RAIN_EGLK_02:0.0117707765,RAIN_EGLK_04:0.0166059028)85:0.0082539137)100:0.0261079736,(((STLH_LYBA_01:0.0061775797,(HRNB_COLE_01:0.0151484866,HRNB_COLE_02:0.0159845826)100:0.0193503734)64:0.0019938534,STLH_LYBA_02:0.0067373799)60:0.0011409276,(RAIN_NFAR_02:0.0101744928,RAIN_NFAR_05:0.0139185442)100:0.0138669726)28:0.0013317385)20:0.0013589873)47:0.0016376164,((REDB_CTWD_01:0.0029419354,(REDB_CTWD_02:0.0059812520,(REDB_DISM_01:0.0075615464,(REDB_DISM_03:0.0073833880,((REDB_SHLD_01:0.0158546529,REDB_SHLD_02:0.0156351294)100:0.0154761276,(REDB_FTZH_02:0.0125545134,REDB_FTZH_05:0.0094884809)100:0.0202154690)93:0.0076985066)92:0.0039167113)99:0.0068419374)97:0.0027971603)99:0.0046909970,((CRRB_JCKS_01:0.0219018607,CRRB_JCKS_02:0.0285906410)83:0.0056142684,(CRRB_FAWN_01:0.0129422996,CRRB_FAWN_02:0.0102466204)100:0.0309428353)100:0.0233751347)90:0.0024494443)49:0.0033864022,(REDB_DRYC_01:0.0036220039,(REDB_DRYC_03:0.0065332343,(((REDB_SHPN_01:0.0008072956,REDB_SHPN_02:0.0043870688)100:0.0065230855,(REDB_MOHD_01:0.0027712377,REDB_MOHD_02:0.0018668662)100:0.0153438612)83:0.0046727042,(REDB_EDSN_01:0.0017612333,REDB_EDSN_04:0.0017414833)100:0.0152067443)95:0.0035700355)92:0.0030532693)100:0.0158794474)100:0.1101335980);
+
+TIME STAMP
+----------
+
+Date and time: Tue Mar 10 09:46:17 2020
+Total CPU time used: 58.32948 seconds (0h:0m:58s)
+Total wall-clock time used: 59.21101522 seconds (0h:0m:59s)
+

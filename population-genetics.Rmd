@@ -1,0 +1,551 @@
+---
+title: "population-genetics"
+author: "Mac Campbell"
+date: "9/14/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+```
+
+```{r}
+library(tidyverse)
+library(viridis)
+library(ggpubr)
+library(grid)
+library(gridExtra)
+library(RColorBrewer)
+```
+
+## Population Genetics Analyses of 318 samples
+
+Generate GL file and covariance matrix:
+
+```{sh, eval=FALSE}
+srun -p high -t 48:00:00 --mem=32G --nodes=1 $HOME/angsd/angsd -P 12  -bam bamlists/318.bamlist -minInd 286 -GL 1 -ref genome/omyV6Chr.fasta \
+-doGLF 2 -doMajorMinor 1 -doMaf 2 -SNP_pval 1e-6 -minMapQ 20 -minQ 20 \
+-out outputs/population-genetics/318 > outputs/population-genetics/beagle.out 2> outputs/population-genetics/beagle.err &
+
+srun -p high -t 1:00:00 python $HOME/pcangsd/pcangsd.py -beagle outputs/population-genetics/318.beagle.gz -o outputs/population-genetics/318 -threads 10
+
+```
+358591 SNPs total    
+Estimating population allele frequencies     
+EM (MAF) converged at iteration: 6     
+
+    Number of sites after MAF filtering (0.05): 119325     
+
+```{r}
+meta<-read_csv("meta/318.csv")
+```
+
+Summarize Meta
+
+```{r}
+meta %>% group_by(Group, MajorGroup) %>% summarize(Count=n()) %>% select(MajorGroup, Group, Count) %>% arrange(MajorGroup)
+```
+
+### PCA
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Some shameless copying from Eric A.
+#' @param samples character vector with the individuals IDs in the order in which
+#' they were passed in the bamlist to angsd.
+#' @param cov covariance matrix
+covar2pcs <- function(samples, cov) {
+  
+  
+  eig <- eigen(cov, symm = TRUE)
+  PC <- as.data.frame(eig$vectors) %>%
+    as_tibble() %>%
+    setNames(sprintf("PC-%02d", 1:ncol(.)))
+  
+  samtib <- tibble(sample = samples)
+  
+  list(
+    PCs = bind_cols(samtib, PC),
+    eigevalues = eig$values
+  )
+}
+```
+
+```{r, warning=FALSE, message=FALSE}
+cov<-read_delim("population-genetics/318.cov", col_names=FALSE, delim=" ") %>% as.matrix()
+```
+
+
+```{r}
+pca <- covar2pcs(meta$Bamlist, cov)
+
+pca_long <- pca$PCs %>%
+  tidyr::gather(., key = "PC", "val", -sample)
+
+# then expand a grid of the possible comparisons (ordered)
+expg <- expand.grid(sample = pca$PCs$sample,
+                    PCx = sprintf("PC-%02d", 1:6),
+                    PCy = sprintf("PC-%02d", 1:6),
+                    stringsAsFactors = FALSE) %>%
+  tibble::as_tibble()
+
+# then left join the pca results onto that
+pca_pairs <- dplyr::left_join(expg, pca_long, by = c("sample", "PCx" = "PC")) %>%
+  dplyr::rename(val_x = val) %>%
+  dplyr::left_join(pca_long, by = c("sample", "PCy" = "PC")) %>%
+  dplyr::rename(val_y = val)
+
+pp_meta <- pca_pairs %>%   # just keep the first 6 PCs around
+  left_join(., meta, by = c("sample" = "Bamlist"))
+
+# now, that has the first 6 PCs in it.  If we want to focus on the just the
+# first 3, we could do 
+npc <- 3
+pp_meta2 <- pp_meta %>%
+  filter( (PCx %in% sprintf("PC-%02d", 1:npc)) & 
+            (PCy %in% sprintf("PC-%02d", 1:npc)) )
+
+ggplot(pp_meta2, aes(x = val_x, y = val_y, fill = Group)) +
+  geom_point(pch = 21, size = 2) +
+  scale_fill_discrete(na.value = "white") + 
+  facet_grid(PCy ~ PCx, scales = "free")
+
+
+```
+```{r}
+
+eig <- eigen(cov, symm = TRUE)
+var<-eig$values/sum(eig$values)
+cumvar<-cumsum(eig$values)/sum(eig$values)
+
+head(var)
+head(cumvar)
+```
+
+
+```{r}
+sub12<-pp_meta2 %>% filter( (PCx =="PC-01") & (PCy =="PC-02") )
+
+pc12<-ggplot(sub12, aes(x = val_x, y = val_y, fill = Group, shape=MajorGroup)) +
+  geom_point(size = 2, alpha=0.75) +
+  scale_fill_discrete(na.value = "white") + 
+  theme_bw()+
+  theme(panel.grid=element_blank())+
+  xlab(paste("PC1", " ", round((100*var[1]),2), "%", sep = ""))+
+  ylab(paste("PC2", " ", round((100*var[2]),2), "%", sep = ""))+
+  scale_fill_viridis_d(option = "magma") +
+  scale_shape_manual("Major Group", values = c(21,22,22,23,24,25)) +
+  theme(legend.position = "")+
+  ggtitle("A") +
+  theme(plot.title = element_text(face="bold", size=16))
+
+sub13<-pp_meta2 %>% filter( (PCx =="PC-01") & (PCy =="PC-03") )
+
+pc13<-ggplot(sub13, aes(x = val_x, y = val_y, fill = Group, shape=MajorGroup)) +
+  geom_point(size = 2, alpha=0.75) +
+  scale_fill_discrete(na.value = "white") + 
+  theme_bw()+
+  theme(panel.grid=element_blank())+
+  xlab(paste("PC1", " ", round((100*var[1]),2), "%", sep = ""))+
+  ylab(paste("PC3", " ", round((100*var[3]),2), "%", sep = ""))+
+  scale_fill_viridis_d(option = "magma") +
+  scale_shape_manual("Major Group", values = c(21,22,22,23,24,25)) +
+  guides(fill = guide_legend(override.aes=list(shape=15, color= viridis(8, option="magma")))) +
+  ggtitle("B") +
+  theme(plot.title = element_text(face="bold", size=16))
+
+
+pcs<-ggarrange(pc12, pc13, ncol = 2, widths=c(1.1, 1.4))
+pcs
+
+```
+
+
+#### Get REDB
+
+204 samples of REDB + MCRT    
+```{r}
+redb<-meta %>% filter(OriginalGroup=="REDB")
+write_tsv(select(redb, Path), "bamlists/redb.bamlist", col_names = FALSE)
+```
+
+```{sh, eval=FALSE}
+srun -p high -t 48:00:00 --mem=32G --nodes=1 $HOME/angsd/angsd -P 6  -bam bamlists/redb.bamlist -minInd 184 -GL 1 -ref genome/omyV6Chr.fasta \
+-doGLF 2 -doMajorMinor 1 -doMaf 2 -SNP_pval 1e-6 -minMapQ 20 -minQ 20  \
+-out outputs/population-genetics/redb > outputs/population-genetics/redb.out 2> outputs/population-genetics/redb.err &
+
+srun -p high -t 1:00:00 python $HOME/pcangsd/pcangsd.py -beagle outputs/population-genetics/redb.beagle.gz -admix -o outputs/population-genetics/redb -threads 10
+
+```
+248319 SNPs total.  
+
+EM (MAF) converged at iteration: 6     
+
+Number of sites after MAF filtering (0.05): 96926      
+```{r, warning=FALSE, message=FALSE}
+
+cov<-read_delim("population-genetics/redb.cov", col_names=FALSE, delim=" ") %>% as.matrix()
+
+```
+
+```{r}
+pca <- covar2pcs(redb$Bamlist, cov)
+
+pca_long <- pca$PCs %>%
+  tidyr::gather(., key = "PC", "val", -sample)
+
+# then expand a grid of the possible comparisons (ordered)
+expg <- expand.grid(sample = pca$PCs$sample,
+                    PCx = sprintf("PC-%02d", 1:6),
+                    PCy = sprintf("PC-%02d", 1:6),
+                    stringsAsFactors = FALSE) %>%
+  tibble::as_tibble()
+
+# then left join the pca results onto that
+pca_pairs <- dplyr::left_join(expg, pca_long, by = c("sample", "PCx" = "PC")) %>%
+  dplyr::rename(val_x = val) %>%
+  dplyr::left_join(pca_long, by = c("sample", "PCy" = "PC")) %>%
+  dplyr::rename(val_y = val)
+
+pp_meta <- pca_pairs %>%   # just keep the first 6 PCs around
+  left_join(., redb, by = c("sample" = "Bamlist"))
+
+# now, that has the first 6 PCs in it.  If we want to focus on the just the
+# first 3, we could do 
+npc <- 3
+pp_meta2 <- pp_meta %>%
+  filter( (PCx %in% sprintf("PC-%02d", 1:npc)) & 
+            (PCy %in% sprintf("PC-%02d", 1:npc)) )
+
+ggplot(pp_meta2) +
+  geom_point(aes(x=val_x, y=val_y, fill=Watershed, shape=MajorGroup), alpha=0.75) +
+  theme_bw() +
+  scale_shape_manual(values = c(21,24)) +
+  facet_grid(PCx ~ PCy) +
+  guides(fill = guide_legend(override.aes=list(shape=22)))
+
+```
+
+
+```{r}
+
+eig <- eigen(cov, symm = TRUE)
+var<-eig$values/sum(eig$values)
+cumvar<-cumsum(eig$values)/sum(eig$values)
+
+head(var)
+head(cumvar)
+```
+
+
+```{r}
+sub12<-pp_meta2 %>% filter( (PCx =="PC-01") & (PCy =="PC-02") )
+
+rb12<-ggplot(sub12) +
+  geom_point(aes(x = val_x, y = val_y, fill = Watershed, shape=MajorGroup), size = 2, alpha=0.75) +
+  scale_fill_discrete(na.value = "white") + 
+  theme_bw()+
+  theme(panel.grid=element_blank())+
+  xlab(paste("PC1", " ", round((100*var[1]),2), "%", sep = ""))+
+  ylab(paste("PC2", " ", round((100*var[2]),2), "%", sep = ""))+
+#  scale_fill_viridis_d(option = "magma") +
+  scale_shape_manual("Major Group", values = c(24,25)) +
+  theme(legend.position = "")+
+  guides(fill = guide_legend(override.aes=list(shape=22))) +
+  ggtitle("A") +
+  theme(plot.title = element_text(face="bold", size=16))
+
+
+
+sub13<-pp_meta2 %>% filter( (PCx =="PC-01") & (PCy =="PC-03") )
+
+rb13<-ggplot(sub13, aes(x = val_x, y = val_y, fill = Watershed, shape=MajorGroup)) +
+  geom_point(size = 2, alpha=0.75) +
+  scale_fill_discrete(na.value = "white") + 
+  theme_bw()+
+  theme(panel.grid=element_blank())+
+  xlab(paste("PC1", " ", round((100*var[1]),2), "%", sep = ""))+
+  ylab(paste("PC3", " ", round((100*var[3]),2), "%", sep = ""))+
+  scale_shape_manual("Major Group", values = c(24,25)) +
+  guides(fill = guide_legend(override.aes=list(shape=22))) +
+  ggtitle("B") +
+  theme(plot.title = element_text(face="bold", size=16))
+
+
+ggarrange(rb12, rb13, ncol = 2, widths=c(1.1, 1.4))
+
+```
+
+Combine   
+
+```{r}
+a<-pc12 + theme(legend.position = "right") +   guides(fill = guide_legend(override.aes=list(shape=15, color= viridis(8, option="magma")))) +
+  theme(legend.title=element_text(size=10), legend.text=element_text(size=8),
+        legend.spacing.y = unit(.05,"cm"))
+a
+```
+
+```{r}
+b<-rb12 + theme(legend.position = "right") + ggtitle("B") +
+    theme(legend.title=element_text(size=10), legend.text=element_text(size=8),
+          legend.spacing.y = unit(.05,"cm"))
+b
+```
+
+```{r}
+blank <- grid.rect(gp=gpar(col="white"))
+```
+
+```{r}
+ggarrange(arrangeGrob(a, blank, ncol=2, widths=c(8.5,1)), b, ncol = 1, nrow=2)
+ggsave("population-genetics/combined-pcs.pdf", width=6, height=8)
+```
+
+
+### Admixture
+
+```{sh, eval=FALSE}
+for i in {1..6};
+do
+
+    for j in {1..10};
+    do echo -n "$i - $j ";
+    srun -p high -t 2:00:00 $HOME/angsd/misc/NGSadmix -likes outputs/population-genetics/318.beagle.gz -K $i -o outputs/population-genetics/ngsadmix318/ngsadmix-k$i-run$j -P 10;
+    done;
+
+  echo "";
+done;
+```
+
+
+Creating an output file to present:
+
+```{sh, eval=FALSE}
+(for log in `ls outputs/population-genetics/ngsadmix318/*.log`; do grep -Po 'like=\K[^ ]+' $log; done) > population-genetics/318-clumpak.txt;
+```
+
+Formatting:   
+(base) Macs-MacBook-Pro-2:mccloud-rrt mac$ head outputs/population-genetics/log_prob.txt 
+2	826952.5
+2	828784.9
+2	828540.2
+
+```{r}
+logs <- read_tsv("population-genetics/318-clumpak.txt", col_names=c("Likes"))
+
+logs$K <- c(rep("1", 10), rep("2", 10), rep("3", 10), rep("4", 
+    10), rep("5", 10), rep("6", 10))
+
+write_tsv(logs %>% select(K, Likes), "population-genetics/318-clump-format.txt", col_names = FALSE)
+```
+http://clumpak.tau.ac.il/bestK.html      
+
+
+All K 1 likes are	-29365115.981868, so method doesn't work, I changed one to 1	-29365115.95, chooses 3
+Dropping k 1 likes out ... Choose 3 again.
+
+
+
+
+Following file:///Users/mac/github/pike-time/801-ngsAdmix-subset.html for plotting
+
+Plotting by group_by(MajorGroup, Group)
+
+Setting up colors
+
+```{r}
+cols<-viridis(6, option = "turbo", alpha = 0.75)
+ggplot()+geom_point(aes(x=c(1,2,3,4,5,6), y=c(1,1,1,1,1,1)), col=cols, cex=5)
+```
+Plotting qopt:
+```{r}
+q2<-read_delim("population-genetics/ngsadmix318/ngsadmix-k2-run1.qopt", delim=" ", col_names=FALSE) %>% dplyr::select(X1, X2) %>%
+  rename(Q1=X1, Q2=X2)
+
+df2<-bind_cols(q2, meta)            
+
+#Hmmm.... Seems we may want to add a column of K=2 so that we can facet later. But we may need to plot separately so that we can all the colors lined up using ggarrange
+
+q2s<-df2 %>% select(MajorGroup, Group, Subgroup, Q1, Q2) %>% arrange(MajorGroup, Group, Subgroup) %>%
+  mutate(Index=1:n()) %>% gather(key=Ancestry, value=Q, 4:5) %>% mutate(K=2)
+
+pops2<-q2s  %>% group_by(MajorGroup, Group) %>% mutate(Start=min(Index), Stop=max(Index)) %>% 
+  select(MajorGroup,Start,Stop) %>% unique() %>% 
+  mutate(Position=round((Start+Stop)/2)) %>% ungroup() %>% unique()
+```
+
+
+  
+```{r}
+p2 <- ggplot(q2s) + 
+  geom_col(aes(x=Index,y=Q, fill=Ancestry), color="NA", size = 0, width = 1) +
+  geom_segment(data=pops2, x = pops2$Start - 0.5, y=0, xend = pops2$Start-0.5, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(data=pops2, x = pops2$Stop[length(pops2$Stop)]  + 0.5, y=0, xend= pops2$Stop[length(pops2$Stop)] + 0.5, yend=1,  alpha=0.9,
+               size=0.25) +
+  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=1, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=0, yend=0, alpha=0.9, size=0.25) +
+  ylim(-0.1,1.01) +
+  xlim(-0.1, pops2$Stop[length(pops2$Stop)]+1) +
+  theme(panel.background = element_blank()) +
+  xlab("") +
+  scale_fill_manual(values=c(cols[2], cols[5])) +
+  theme(legend.position = "") +
+  theme(axis.text.x = element_blank(), axis.ticks.x=element_blank())
+  
+p2
+
+```
+
+Is there a non-tedious way to do this?
+
+```{r}
+q3<-read_delim("population-genetics/ngsadmix318/ngsadmix-k3-run1.qopt", delim=" ", col_names=FALSE) %>% select(X1, X2, X3) %>%
+  rename(Q1=X1, Q2=X2, Q3=X3)
+
+df3<-bind_cols(q3, meta)            
+
+
+q3s<-df3 %>% select(MajorGroup, Group, Subgroup, Q1, Q2, Q3) %>% arrange(MajorGroup, Group, Subgroup) %>%
+  mutate(Index=1:n()) %>% gather(key=Ancestry, value=Q, 4:6) %>% mutate(K=3)
+```
+
+```{r}
+p3<-ggplot(q3s) + 
+  geom_col(aes(x=Index,y=Q, fill=Ancestry), color="NA", size = 0, width = 1) +
+  geom_segment(data=pops2, x = pops2$Start - 0.5, y=0, xend = pops2$Start-0.5, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(data=pops2, x = pops2$Stop[length(pops2$Stop)]  + 0.5, y=0, xend= pops2$Stop[length(pops2$Stop)] + 0.5, yend=1,  alpha=0.9,
+               size=0.25) +
+  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=1, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=0, yend=0, alpha=0.9, size=0.25) +
+ # theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  theme(axis.text.x=element_blank()) +
+  theme(axis.ticks.x= element_blank()) +
+  ylim(-0.1,1.01) +
+  xlim(-0.1, pops2$Stop[length(pops2$Stop)]+1) +
+  theme(panel.background = element_blank()) +
+#  scale_x_continuous(breaks=pops2$Position, labels=pops2$Group) +
+  theme(legend.position = "") +
+  xlab("") +
+  scale_fill_manual(values=c(cols[6], cols[4], cols[5])) 
+
+p3
+```
+
+```{r}
+q4<-read_delim("population-genetics/ngsadmix318/ngsadmix-k4-run1.qopt", delim=" ", col_names=FALSE) %>% select(X1, X2, X3, X4) %>%
+  rename(Q1=X1, Q2=X2, Q3=X3, Q4=X4)
+
+df4<-bind_cols(q4, meta)            
+
+
+q4s<-df4 %>% select(MajorGroup, Group, Subgroup, Q1, Q2, Q3, Q4) %>% arrange(MajorGroup, Group, Subgroup) %>%
+  mutate(Index=1:n()) %>% gather(key=Ancestry, value=Q, 4:7) %>% mutate(K=4)
+```
+
+```{r}
+p4<-ggplot(q4s) + 
+  geom_col(aes(x=Index,y=Q, fill=Ancestry), color="NA", size = 0, width = 1) +
+  geom_segment(data=pops2, x = pops2$Start - 0.5, y=0, xend = pops2$Start-0.5, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(data=pops2, x = pops2$Stop[length(pops2$Stop)]  + 0.5, y=0, xend= pops2$Stop[length(pops2$Stop)] + 0.5, yend=1,  alpha=0.9,
+               size=0.25) +
+  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=1, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=0, yend=0, alpha=0.9, size=0.25) +
+ # theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  theme(axis.text.x=element_blank()) +
+  theme(axis.ticks.x= element_blank()) +
+  ylim(-0.1,1.01) +
+  xlim(-0.1, pops2$Stop[length(pops2$Stop)]+1) +
+  theme(panel.background = element_blank()) +
+#  scale_x_continuous(breaks=pops2$Position, labels=pops2$Group) +
+  #theme(legend.position = "") +
+  xlab("") +
+  scale_fill_manual(values=c(cols[6], cols[5], cols[2], cols[4]) )
+
+p4
+```
+
+```{r}
+q5<-read_delim("population-genetics/ngsadmix318/ngsadmix-k5-run1.qopt", delim=" ", col_names=FALSE) %>% select(X1, X2, X3, X4, X5) %>%
+  rename(Q1=X1, Q2=X2, Q3=X3, Q4=X4, Q5=X5)
+
+df5<-bind_cols(q5, meta)            
+
+
+q5s<-df5 %>% select(MajorGroup, Group, Subgroup, Q1, Q2, Q3, Q4, Q5) %>% arrange(MajorGroup, Group, Subgroup) %>%
+  mutate(Index=1:n()) %>% gather(key=Ancestry, value=Q, 4:8) %>% mutate(K=5)
+```
+
+```{r}
+p5<-ggplot(q5s) + 
+  geom_col(aes(x=Index,y=Q, fill=Ancestry), color="NA", size = 0, width = 1) +
+  geom_segment(data=pops2, x = pops2$Start - 0.5, y=0, xend = pops2$Start-0.5, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(data=pops2, x = pops2$Stop[length(pops2$Stop)]  + 0.5, y=0, xend= pops2$Stop[length(pops2$Stop)] + 0.5, yend=1,  alpha=0.9,
+               size=0.25) +
+  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=1, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=0, yend=0, alpha=0.9, size=0.25) +
+ # theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  theme(axis.text.x=element_blank()) +
+  theme(axis.ticks.x= element_blank()) +
+  ylim(-0.1,1.01) +
+  xlim(-0.1, pops2$Stop[length(pops2$Stop)]+1) +
+  theme(panel.background = element_blank()) +
+#  scale_x_continuous(breaks=pops2$Position, labels=pops2$Group) +
+ # theme(legend.position = "") +
+  xlab("") +
+  scale_fill_manual(values=c(cols[3], cols[5], cols[2], cols[4], cols[6]) )
+
+p5
+```
+
+```{r}
+q6<-read_delim("population-genetics/ngsadmix318/ngsadmix-k6-run1.qopt", delim=" ", col_names=FALSE) %>% select(X1, X2, X3, X4, X5, X6) %>%
+  rename(Q1=X1, Q2=X2, Q3=X3, Q4=X4, Q5=X5, Q6=X6)
+
+df6<-bind_cols(q6, meta)            
+
+
+q6s<-df6 %>% select(MajorGroup, Group, Subgroup, Q1, Q2, Q3, Q4, Q5, Q6) %>% arrange(MajorGroup, Group, Subgroup) %>%
+  mutate(Index=1:n()) %>% gather(key=Ancestry, value=Q, 4:9) %>% mutate(K=6)
+```
+
+```{r}
+p6<-ggplot(q6s) + 
+  geom_col(aes(x=Index,y=Q, fill=Ancestry), color="NA", size = 0, width = 1) +
+  geom_segment(data=pops2, x = pops2$Start - 0.5, y=0, xend = pops2$Start-0.5, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(data=pops2, x = pops2$Stop[length(pops2$Stop)]  + 0.5, y=0, xend= pops2$Stop[length(pops2$Stop)] + 0.5, yend=1,  alpha=0.9,
+               size=0.25) +
+  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=1, yend=1, alpha=0.9, size=0.25) +
+  geom_segment(x=0, xend= pops2$Stop[length(pops2$Stop)], y=0, yend=0, alpha=0.9, size=0.25) +
+ # theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  theme(axis.text.x=element_blank()) +
+  theme(axis.ticks.x= element_blank()) +
+  ylim(-0.1,1.01) +
+  xlim(-0.1, pops2$Stop[length(pops2$Stop)]+1) +
+  theme(panel.background = element_blank()) +
+#  scale_x_continuous(breaks=pops2$Position, labels=pops2$Group) +
+ theme(legend.position = "") +
+  xlab("") +
+  scale_fill_manual(values=c(cols[5], cols[6], cols[3], cols[4], cols[2], cols[1]) ) +
+  scale_x_continuous(breaks=pops2$Position, labels=pops2$Group) +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  ggtitle("K = 6") +
+  theme(plot.title = element_text(hjust=0.5, face="bold"))
+
+
+p6
+```
+Ticks
+
+
+```{r}
+ggarrange(p2 + ggtitle("K = 2") + theme(plot.title = element_text(hjust=0.5, face="bold")),
+          p3 + ggtitle("K = 3") + theme(plot.title = element_text(hjust=0.5, face="bold")),
+          p4 + ggtitle("K = 4") + theme(plot.title = element_text(hjust=0.5, face="bold")) + theme(legend.position = ""),
+          p5 + ggtitle("K = 5") + theme(plot.title = element_text(hjust=0.5, face="bold")) + theme(legend.position = ""),
+          p6,
+          ncol=1, heights=c(1,1,1,1,1.25))
+
+ggsave("population-genetics/ks.jpg", height=8, width = 8)
+
+```
+
+
