@@ -69,6 +69,118 @@ ggtree(tree)+geom_tiplab(size=2)+geom_nodelab()
 
 
 ```
+### Generate figure
+
+```{r}
+library("phangorn")
+tree<-read.tree(file="Data Supplement/ML tree results/ml.treefile")
+tree<-midpoint(tree)
+ggtree(tree)
+```
+
+```{r}
+nodes<-tibble(tree$node.label)
+nodes[1,]<-"NA"
+nodes<-separate(nodes, `tree$node.label`, sep="/", into = c("SH-aLRT","UF-Boot"))
+nodes$`SH-aLRT`<-as.numeric(nodes$`SH-aLRT`)
+nodes$`UF-Boot`<-as.numeric(nodes$`UF-Boot`)
+supported<-nodes
+supported$`SH-aLRT` <-ifelse(nodes$`SH-aLRT` < 80, "NA", nodes$`SH-aLRT`)
+supported$`UF-Boot` <-ifelse(nodes$`UF-Boot` < 95, "NA", nodes$`UF-Boot`)
+supported$`SH-aLRT`<-as.numeric(supported$`SH-aLRT`)
+supported$`UF-Boot`<-as.numeric(supported$`UF-Boot`)
+ggtree(tree)+geom_text2(aes(subset=!isTip, label=node), hjust=-.3)+geom_tiplab(size=2)
+
+```
+
+
+
+```{r, warning=FALSE, message=FALSE}
+library(ggrepel)
+t1<-ggtree(tree)
+t1$data<-separate(t1$data, label, sep="/", into = c("SH-aLRT","UF-Boot"), remove=FALSE)
+t1$data$`SH-aLRT`<-as.numeric(t1$data$`SH-aLRT`)
+t1$data$`UF-Boot`<-as.numeric(t1$data$`UF-Boot`)
+t1$data<-mutate(t1$data, Supported =ifelse(`SH-aLRT` >= 80 & `UF-Boot` >= 95, "YES", "N0"))
+
+t2<-t1+geom_nodepoint(aes(subset = !isTip & Supported =="YES", label=Supported), shape=23, fill="darkgrey", alpha=1.0,
+                      size=3) +
+  geom_tiplab(size=2)
+```
+
+
+Coloring and labelling clades.
+
+```{r, warning=FALSE, message=FALSE}
+#setting an offset
+x<-.03
+
+t3<-t2 + # geom_hilight(node=67, fill="steelblue", alpha=.25) + # Highlighting MRRT
+  geom_cladelabel(node=57, label="O. m. newberri", fontface="italic", offset=x) +
+  geom_cladelabel(node=64, label="O. m. gairdnerii", fontface="italic", offset =x)+
+  geom_cladelabel(node=67, label="O. m. stonei", fontface="bold.italic", offset =x)+
+  geom_cladelabel(node=74, label="O. m. irideus", fontface="italic", offset =x)+
+  geom_cladelabel(node=50, label="O. m. whitei", fontface="italic", offset =x)+
+  geom_cladelabel(node=53, label="O. m. gilberti", fontface="italic", offset =x)+
+  geom_cladelabel(node=46, label="O. m. aquabonita", fontface="italic", offset =x)+
+  geom_cladelabel(node=45, label="Golden Trout\nComplex ", offset =.055, fontsize=3, barsize=0)+
+  geom_cladelabel(node=79, label="O. m. aquilarum", fontface="italic", offset =x)+
+  xlim(0,.2)+
+  ggtitle("A")+
+  theme(plot.title = element_text(face="bold", size=18))
+
+t3
+```
+
+
+
+
+Figure 2B the consensus tree generated from bootstrap replicates.    
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+u<-read.tree(file="Data Supplement/ML tree results/ml.contree")
+u<-midpoint(u)
+u2<-ggtree(u)
+u2$data<-mutate(u2$data, Supported = ifelse(as.numeric(label) > 95, "YES","NO"))
+u2$data<-mutate(u2$data, Supported90 = ifelse(as.numeric(label) <= 95 & as.numeric(label) >90, "YES","NO"))
+
+u2 + geom_text2(aes(subset=!isTip, label=node), hjust=-.3)
+
+u3<-u2+geom_nodepoint(aes(subset = !isTip & Supported =="YES", label=Supported), shape=21, fill="black", alpha=1.0,
+                      size=3) +
+  geom_nodepoint(aes(subset = !isTip & Supported90 =="YES", label=Supported90), shape=21, fill="darkgrey", alpha=1.0,
+                      size=3) +
+  geom_tiplab(size=2) 
+  
+
+```
+
+Coloring and labelling clades.
+
+```{r, warning=FALSE, message=FALSE}
+u4<-u3 + # geom_hilight(node=67, fill="steelblue", alpha=.25) + # Highlighting MRRT
+  geom_cladelabel(node=64, label="O. m. newberri", fontface="italic", offset=x) +
+  geom_cladelabel(node=71, label="O. m. gairdnerii", fontface="italic", offset =x)+
+  geom_cladelabel(node=74, label="O. m. calisulat", fontface="bold.italic", offset =x)+
+  geom_cladelabel(node=58, label="O. m. irideus", fontface="italic", offset =x)+
+  geom_cladelabel(node=51, label="O. m. whitei", fontface="italic", offset =x)+
+  geom_cladelabel(node=54, label="O. m. gilberti", fontface="italic", offset =x)+
+  geom_cladelabel(node=47, label="O. m. aquabonita", fontface="italic", offset =x)+
+  geom_cladelabel(node=46, label="Golden Trout\nComplex ", offset =.055, fontsize=3, barsize=0)+
+  geom_cladelabel(node=56, label="O. m. aquilarum", fontface="italic", offset =x)+
+  xlim(0,.2)+
+  ggtitle("B")+
+  theme(plot.title = element_text(face="bold", size=18))
+
+
+u4
+```
+
+Put these two together on one page.
+```{r}
+library(cowplot)
+plot_grid(t3,u4, ncol=2)
+```
 
 
 ## Species Tree
@@ -79,6 +191,34 @@ t2<-root(t2, c("LCT"))
 ggtree(t2,branch.length = "none")+geom_tiplab(size=4)+geom_nodelab()+xlim(0,8)
 ```
 
+Improving.      
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+
+tree2<-read.nexus(file="Data Supplement/SVDQuartets/data.asc.tre")
+tree2<-root(tree2, c("LCT"))
+
+ggtree(tree2, branch.length = "none")+geom_tiplab(size=2.5)+xlim(0,9)+geom_text2(aes(subset=!isTip, label=node), hjust=-.3)
+```
+
+```{r}
+y<-.5
+tree3<- ggtree(tree2, branch.length = "none")+  
+  geom_cladelabel(node=31, label="O. m. newberri", fontface="italic", offset=y) +
+  geom_cladelabel(node=34, label="O. m. gairdnerii", fontface="italic", offset =y)+
+  geom_cladelabel(node=38, label="O. m. calisulat", fontface="bold.italic", offset =y)+
+  geom_cladelabel(node=35, label="O. m. irideus", fontface="italic", offset =y)+
+  geom_cladelabel(node=26, label="O. m. whitei", fontface="italic", offset =y)+
+  geom_cladelabel(node=27, label="O. m. gilberti", fontface="italic", offset =y)+
+  geom_cladelabel(node=24, label="O. m. aquabonita", fontface="italic", offset =y)+
+  geom_cladelabel(node=23, label="Golden Trout\nComplex ", offset =3, fontsize=3, barsize=0)+
+  geom_cladelabel(node=37, label="O. m. aquilarum", fontface="italic", offset =y)+
+  xlim(0,12)+
+  geom_tiplab(size=2.5)
+
+tree3
+
+```
 
 #Networks
 
