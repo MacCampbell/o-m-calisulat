@@ -551,6 +551,7 @@ ptot<-ggarrange(p2 + ggtitle("K = 2") + theme(plot.title = element_text(hjust=0.
 
 ptot
 ggsave("population-genetics/ks.jpg", height=8, width = 8)
+ggsave("population-genetics/ks.pdf", height=8, width=8)
 
 ```
 
