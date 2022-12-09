@@ -377,7 +377,8 @@ pops2<-q2s  %>% group_by(MajorGroup, Group) %>% mutate(Start=min(Index), Stop=ma
   
 ```{r}
 p2 <- ggplot(q2s) + 
-  geom_col(aes(x=Index,y=Q, fill=Ancestry), color="NA", size = 0, width = 1) +
+  geom_col(aes(x=Index,y=Q, fill=Ancestry), color="NA", size=0, width = 1) +
+  #geom_bar(aes(x=Index, y=Q, fill=Ancestry), stat="identity", width=1, lwd=0) +
   geom_segment(data=pops2, x = pops2$Start - 0.5, y=0, xend = pops2$Start-0.5, yend=1, alpha=0.9, size=0.25) +
   geom_segment(data=pops2, x = pops2$Stop[length(pops2$Stop)]  + 0.5, y=0, 
                xend= pops2$Stop[length(pops2$Stop)] + 0.5, yend=1,  alpha=0.9,
@@ -538,13 +539,17 @@ Ticks
 
 
 ```{r}
-ggarrange(p2 + ggtitle("K = 2") + theme(plot.title = element_text(hjust=0.5, face="bold")),
+
+ptot<-ggarrange(p2 + ggtitle("K = 2") + theme(plot.title = element_text(hjust=0.5, face="bold")),
           p3 + ggtitle("K = 3") + theme(plot.title = element_text(hjust=0.5, face="bold")),
           p4 + ggtitle("K = 4") + theme(plot.title = element_text(hjust=0.5, face="bold")) + theme(legend.position = ""),
           p5 + ggtitle("K = 5") + theme(plot.title = element_text(hjust=0.5, face="bold")) + theme(legend.position = ""),
           p6,
           ncol=1, heights=c(1,1,1,1,1.25))
 
+
+
+ptot
 ggsave("population-genetics/ks.jpg", height=8, width = 8)
 
 ```
